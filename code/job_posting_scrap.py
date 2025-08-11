@@ -2,50 +2,53 @@ import requests
 import pandas as pd
 import time
 
-API_KEY = "a681c95436msha21de5c822b24ddp1c6689jsn816fcb8b7f60"  # Replace with your JSearch API key
-BASE_URL = "https://jsearch.p.rapidapi.com/search"
+APP_ID = "26eaa9751"  # Replace with your Application ID
+APP_KEY = "b5b7b9fb9za26b9b0121078d9f8c764799"  # Replace with your Application Key
 
-headers = {
-    "x-rapidapi-key": API_KEY,
-    "x-rapidapi-host": "jsearch.p.rapidapi.com"
-}
 
-roles = ["Python Developer", "Software Developer", "Cybersecurity", "Data Analyst"]
-locations = ["Bangalore", "Chennai", "Mumbai", "Delhi", "Hyderabad", "Pune", "Kolkata", "India"]
+COUNTRY = "in"  # 'in' for India, 'gb' for UK, etc.
+SEARCH_TERMS = ["developer", "data analyst", "cybersecurity", "manager"]
+RESULTS_PER_PAGE = 20  # Max is 50
+MAX_PAGES = 5  # Limit pages per role (to avoid hitting free tier limit)
 
 all_jobs = []
 
-for role in roles:
-    for location in locations:
-        for page in range(1, 4):  # Increase pages to get more results
-            params = {
-                "query": f"{role} in {location}",
-                "page": page,
-                "num_pages": 1
-            }
-            
-            response = requests.get(BASE_URL, headers=headers, params=params)
-            if response.status_code == 200:
-                data = response.json()
-                jobs = data.get("data", [])
-                
-                for job in jobs:
-                    all_jobs.append({
-                        "search_role": role,
-                        "search_location": location,
-                        "title": job.get("job_title"),
-                        "company": job.get("employer_name"),
-                        "location": job.get("job_city"),
-                        "via": job.get("job_publisher"),
-                        "job_type": job.get("job_employment_type"),
-                        "salary": job.get("job_salary"),
-                        "description": job.get("job_description"),
-                        "posted_at": job.get("job_posted_at_datetime_utc"),
-                        "apply_link": job.get("job_apply_link")
-                    })
-            
-            time.sleep(1)  # Avoid rate limiting
+for term in SEARCH_TERMS:
+    print(f"Scraping jobs for: {term}")
+    for page in range(1, MAX_PAGES + 1):
+        url = f"https://api.adzuna.com/v1/api/jobs/{COUNTRY}/search/{page}"
+        params = {
+            "app_id": APP_ID,
+            "app_key": APP_KEY,
+            "results_per_page": RESULTS_PER_PAGE,
+            "what": term,
+            "content-type": "application/json"
+        }
+        response = requests.get(url, params=params)
+        if response.status_code != 200:
+            print(f"Error fetching page {page} for {term}: {response.status_code}")
+            break
+
+        data = response.json()
+        jobs = data.get("results", [])
+        if not jobs:
+            break
+
+        for job in jobs:
+            all_jobs.append({
+                "title": job.get("title"),
+                "company": job.get("company", {}).get("display_name"),
+                "location": job.get("location", {}).get("display_name"),
+                "Salary": job.get("Salary",{}).get("display_name"),
+                "created": job.get("created"),
+                "description": job.get("description"),
+                "redirect_url": job.get("redirect_url")
+            })
+
+        # Small delay to avoid hitting rate limits
+        time.sleep(0.5)
 
 df = pd.DataFrame(all_jobs)
-df.to_csv("jobs_india.csv", index=False)
-print(f"Saved {len(df)} jobs to jobs_india.csv")
+print(f"\nTotal Jobs Collected: {len(df)}")
+df.to_csv("adzuna_jobs.csv", index=False, encoding="utf-8")
+print("Saved to adzuna_jobs.csv")
