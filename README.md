@@ -1,7 +1,7 @@
-## Job Posting ETL Pipeline
+# Job Posting ETL Pipeline
 A production-ready, end-to-end pipeline that extracts job postings, cleans & normalizes fields (title, company, location, salary, skills), and loads the curated data into MySQL for analytics. A Power BI report connects to MySQL to visualize role demand, top hiring companies, salary trends, and more.
 
-# Features
+## Features
 
 API-based extraction: Uses Adzuna Job Search API (free/public source) to fetch live job postings.
 
@@ -59,7 +59,7 @@ job-posting-etl/
 └─ README.md
 🔗 Data Source: Adzuna API
 
-Why Adzuna? Unlike Naukri/LinkedIn (protected with anti-scraping, CAPTCHA, and dynamic content), Adzuna offers a developer-friendly REST API to fetch job listings.
+## Why Adzuna? Unlike Naukri/LinkedIn (protected with anti-scraping, CAPTCHA, and dynamic content), Adzuna offers a developer-friendly REST API to fetch job listings.
 
 Endpoint Example:
 https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=YOUR_APP_ID&app_key=YOUR_APP_KEY&results_per_page=50&what=Data%20Analyst&where=India
@@ -67,7 +67,7 @@ Parameters allow filtering by keywords, location, salary range, etc.
 
 Extracted data is stored in CSV (jobs_raw.csv) for reproducibility.
 
-# What Makes This Project Stand Out
+## What Makes This Project Stand Out
 
 Real-world challenge addressed: Job boards block scraping → API-based solution ensures compliance.
 
