@@ -18,6 +18,7 @@ Quality: Data-quality checks (nulls, ranges, duplicates)
 Generic-ready: Can be extended to any job posting API, CSV dataset, or streaming job feed.
 
 ## 🧱 Architecture
+``` bash
 [Adzuna API]
      │  Extract (Python)
      ▼
@@ -31,8 +32,10 @@ Generic-ready: Can be extended to any job posting API, CSV dataset, or streaming
      │
      ▼
    Power BI (Direct / Import Mode) → Dashboards & DAX
+```
    
 ## 🧰 Tech Stack
+``` bash
 
 Python 3.9+
 
@@ -41,10 +44,12 @@ Requests, Pandas, SQLAlchemy, python-dotenv
 MySQL 8+
 
 Power BI Desktop (for visualization)
-
+```
 Optional (for future upgrades): Airflow/Prefect for orchestration, Docker for reproducibility, Tableau as alternative BI.
 
 📁 Project Structure
+
+```bash
 job-posting-etl/
 ├─ etl/
 │  └─ extract_api.py        # fetch from Adzuna API
@@ -58,7 +63,7 @@ job-posting-etl/
 ├─ .env.example
 ├─ requirements.txt
 └─ README.md
-
+```
 🔗 Data Source: Adzuna API
 
 ## Why Adzuna? Unlike Naukri/LinkedIn (protected with anti-scraping, CAPTCHA, and dynamic content), Adzuna offers a developer-friendly REST API to fetch job listings.
