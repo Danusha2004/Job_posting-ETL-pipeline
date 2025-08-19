@@ -1,4 +1,4 @@
-# Job Posting ETL Pipeline
+# JOB POSTING ETL PIPELINE
 A production-ready, end-to-end pipeline that extracts job postings, cleans & normalizes fields (title, company, location, salary, skills), and loads the curated data into MySQL for analytics. A Power BI report connects to MySQL to visualize role demand, top hiring companies, salary trends, and more.
 
 ## Features
@@ -17,7 +17,7 @@ Quality: Data-quality checks (nulls, ranges, duplicates)
 
 Generic-ready: Can be extended to any job posting API, CSV dataset, or streaming job feed.
 
-🧱 Architecture
+## 🧱 Architecture
 [Adzuna API]
      │  Extract (Python)
      ▼
@@ -31,7 +31,8 @@ Generic-ready: Can be extended to any job posting API, CSV dataset, or streaming
      │
      ▼
    Power BI (Direct / Import Mode) → Dashboards & DAX
-🧰 Tech Stack
+   
+## 🧰 Tech Stack
 
 Python 3.9+
 
@@ -46,25 +47,26 @@ Optional (for future upgrades): Airflow/Prefect for orchestration, Docker for re
 📁 Project Structure
 job-posting-etl/
 ├─ etl/
-│  ├─ extract_api.py   # fetch from Adzuna API
+│  └─ extract_api.py        # fetch from Adzuna API
 ├─ sql/
 │  └─ job_postings.sql
 ├─ data/
-│  ├─ raw/      # API extracts (CSV)
-│  └─ clean/    # cleaned outputs (intermediate)
+│  ├─ raw/                  # API extracts (CSV)
+│  └─ clean/                # cleaned outputs (intermediate)
 ├─ powerbi/
-│  └─ JobPostingReport.pbix  # Power BI file
+│  └─ JobPostingReport.pbix # Power BI file
 ├─ .env.example
 ├─ requirements.txt
 └─ README.md
+
 🔗 Data Source: Adzuna API
 
 ## Why Adzuna? Unlike Naukri/LinkedIn (protected with anti-scraping, CAPTCHA, and dynamic content), Adzuna offers a developer-friendly REST API to fetch job listings.
 
 Endpoint Example:
 https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=YOUR_APP_ID&app_key=YOUR_APP_KEY&results_per_page=50&what=Data%20Analyst&where=India
-Parameters allow filtering by keywords, location, salary range, etc.
 
+Parameters allow filtering by keywords, location, salary range, etc.
 Extracted data is stored in CSV (jobs_raw.csv) for reproducibility.
 
 ## What Makes This Project Stand Out
